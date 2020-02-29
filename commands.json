@@ -1,0 +1,42 @@
+{
+  "help": {
+    "brief": "コマンドの一覧を見る",
+    "description": "あなたが実行可能なコマンドの一覧を表示します。\nコマンドが指定されていた場合、そのコマンドの詳細情報を表示します。",
+    "usage": "/help [Command]"
+  },
+  "sendticket": {
+    "brief": "Ticketパネルを送信する",
+    "description": "リアクションをクリックしてTicketを作成できるTicketパネルを再送信します。\n既存のTicketパネルを削除するため、再送信の前にメッセージのクリアが行われます。",
+    "usage": "/sendticket"
+  },
+  "bypasslink": {
+    "brief": "リンク無視ユーザーリストを編集する",
+    "description": "Ticket作成時のDiscord<->Minecraftリンク確認を行わないユーザーリストを編集します。",
+    "usage": "/bypasslink <ユーザーID>"
+  },
+  "close": {
+    "brief": "Ticketをクローズする",
+    "description": "メッセージ履歴をファイルに出力したあと、Ticketチャンネルを削除します。",
+    "usage": "/close"
+  },
+  "play": {
+    "brief": "Rezxisのオンラインプレイヤー数を確認する",
+    "description": "play.rezxis.netに接続しているプレイヤー数を確認します。\nこのコマンドを使用して、play.rezxis.netがオフラインかどうかも確認できます。",
+    "usage": "/play"
+  },
+  "play2": {
+    "brief": "Rezxisのオンラインプレイヤー数を確認する",
+    "description": "play2.rezxis.netに接続しているプレイヤー数を確認します。\nこのコマンドを使用して、play2.rezxis.netがオフラインかどうかも確認できます。",
+    "usage": "/play2"
+  },
+  "mchosting": {
+    "brief": "Rezxisのオンラインプレイヤー数を確認する",
+    "description": "mchosting.rezxis.netに接続しているプレイヤー数を確認します。\nこのコマンドを使用して、mchosting.rezxis.netがオフラインかどうかも確認できます。",
+    "usage": "/mchosting"
+  },
+  "whoami": {
+    "brief": "リンクされているMCIDを確認する",
+    "description": "自分のアカウントにリンクされているMinecraft プレイヤーのプレイヤー名を確認します。",
+    "usage": "/whoami"
+  }
+}
