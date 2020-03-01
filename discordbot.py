@@ -225,18 +225,21 @@ async def on_reaction_add(reaction, user):
         print(user.id)
         print(f"{os.environ['API_URL']}{user.id}")
         if str(user.id) not in ignorelink:
-            userdata = json.loads(requests.get(
-                f"{os.environ['API_URL']}{user.id}").text)
-            print(userdata)
-            if userdata["code"] != 0:
-                message = await channel.send("Discordとのリンクがされていません。\n" +
-                                             "リンクを行っているのにも関わらずこのメッセージが表示されたり、\n" +
-                                             "リンクを必要としない、またはリンク関連のTicketを作成する場合はshuu_9025#1141にお問い合わせください。")
-                await asyncio.sleep(5)
-                await message.delete()
-                return
-            mcid = json.loads(requests.get(
-                f"https://api.mojang.com/user/profiles/{userdata['message'].replace('-', '')}/names").text)[-1]["name"]
+            try:
+                userdata = json.loads(requests.get(
+                    f"{os.environ['API_URL']}{user.id}").text)
+                print(userdata)
+                if userdata["code"] != 0:
+                    message = await channel.send("Discordとのリンクがされていません。\n" +
+                                                 "リンクを行っているのにも関わらずこのメッセージが表示されたり、\n" +
+                                                 "リンクを必要としない、またはリンク関連のTicketを作成する場合はshuu_9025#1141にお問い合わせください。")
+                    await asyncio.sleep(5)
+                    await message.delete()
+                    return
+                mcid = json.loads(requests.get(
+                    f"https://api.mojang.com/user/profiles/{userdata['message'].replace('-', '')}/names").text)[-1]["name"]
+            except Exception:
+                mcid = "API Error. Please contact to Administrators."
         sadmin = discord.utils.get(server.roles, id=573179356273442817)
         admin = discord.utils.get(server.roles, id=517992434366545960)
         staff = discord.utils.get(server.roles, id=517993102867169280)
@@ -426,15 +429,18 @@ async def mchosting(ctx):
 
 @bot.command()
 async def whoami(ctx):
-    userdata = json.loads(requests.get(
-        f"{os.environ['API_URL']}{ctx.message.author.id}").text)
-    if userdata["code"] != 0:
-        await ctx.channel.send(f"あなたは…誰ですか…？\n"
-                               f"DiscordアカウントとMinecraftアカウントをリンクしていないようです。\n"
-                               f"<#681345663908577294>でアカウントをリンクしてください！")
-        return
-    mcid = json.loads(requests.get(
-        f"https://api.mojang.com/user/profiles/{userdata['message'].replace('-', '')}/names").text)[-1]["name"]
+    try:
+        userdata = json.loads(requests.get(
+            f"{os.environ['API_URL']}{ctx.message.author.id}").text)
+        if userdata["code"] != 0:
+            await ctx.channel.send(f"あなたは…誰ですか…？\n"
+                                   f"DiscordアカウントとMinecraftアカウントをリンクしていないようです。\n"
+                                   f"<#681345663908577294>でアカウントをリンクしてください！")
+            return
+        mcid = json.loads(requests.get(
+            f"https://api.mojang.com/user/profiles/{userdata['message'].replace('-', '')}/names").text)[-1]["name"]
+    except Exception:
+        mcid = "API Error. Please contact to Administrators."
     await ctx.message.channel.send(f"あなたは`{mcid}`さんですね！\n"
                                    f"タブン…")
 
