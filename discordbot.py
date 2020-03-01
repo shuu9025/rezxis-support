@@ -102,7 +102,11 @@ async def on_ready():
 
 
 @bot.command(name="help")
-async def help(ctx, page=1):
+async def help(ctx, page="1"):
+    try:
+        page = int(page)
+    except TypeError:
+        pass
     if page in bot.all_commands:
         cmds = bot.commands
         command = None
