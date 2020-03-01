@@ -98,7 +98,7 @@ async def on_message_delete(message):
 @bot.event
 async def on_ready():
     print('Logged in as {0.user}'.format(bot))
-    await bot.change_presence(activity=discord.Game(name='/new'))
+    await bot.change_presence(activity=discord.Game(name='/help'))
 
 
 @bot.command(name="help")
