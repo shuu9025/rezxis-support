@@ -164,7 +164,7 @@ async def help(ctx, detailcommand=None):
         await ctx.message.channel.send(embed=embed)
 
 
-@bot.command()
+@bot.command(aliases=["new"])
 @is_ticketpanel()
 async def sendticket(ctx):
     await ctx.message.channel.purge(limit=100)
