@@ -103,7 +103,11 @@ async def on_ready():
 
 @bot.command(name="help")
 async def help(ctx, detailcommand=None):
-    if detailcommand is None:
+    try:
+        page = int(detailcommand)
+    except TypeError:
+        page = -1
+    if 1 <= page:
         cmds = bot.commands
         embed = discord.Embed(
             title="Help",
@@ -112,16 +116,19 @@ async def help(ctx, detailcommand=None):
         )
         with open("commands.json", encoding="UTF-8") as f:
             cmdinfos: dict = json.load(f)
+        i = -1
         for cmd in cmds:
             try:
                 if not await cmd.can_run(ctx):
                     continue
             except CommandError:
                 continue
-            embed.add_field(
-                name=cmd.name,
-                value=cmdinfos.get(cmd.name, {}).get("brief", "Undefined")
-            )
+            i += 1
+            if (page - 1) * 5 <= i <= page * 5:
+                embed.add_field(
+                    name=cmd.name,
+                    value=cmdinfos.get(cmd.name, {}).get("brief", "Undefined")
+                )
         await ctx.send(embed=embed)
     else:
         cmds = bot.commands
@@ -164,7 +171,7 @@ async def help(ctx, detailcommand=None):
         await ctx.message.channel.send(embed=embed)
 
 
-@bot.command(aliases=["new"])
+@bot.command()
 @is_ticketpanel()
 async def sendticket(ctx):
     await ctx.message.channel.purge(limit=100)
