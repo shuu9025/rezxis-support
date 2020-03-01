@@ -159,7 +159,7 @@ async def help(ctx, page=1):
             except CommandError:
                 continue
             i += 1
-            if (page - 1) * 5 <= i <= page * 5:
+            if (page - 1) * 5 <= i < page * 5:
                 embed.add_field(
                     name=cmd.name,
                     value=cmdinfos.get(cmd.name, {}).get("brief", "Undefined")
