@@ -105,7 +105,7 @@ async def on_ready():
 async def help(ctx, page="1"):
     try:
         page = int(page)
-    except TypeError:
+    except ValueError:
         pass
     if page in bot.all_commands:
         cmds = bot.commands
