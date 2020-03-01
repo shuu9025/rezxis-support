@@ -102,43 +102,16 @@ async def on_ready():
 
 
 @bot.command(name="help")
-async def help(ctx, detailcommand=None):
-    try:
-        page = int(detailcommand)
-    except TypeError:
-        page = -1
-    if 1 <= page:
-        cmds = bot.commands
-        embed = discord.Embed(
-            title="Help",
-            description="このBotに登録されているコマンドのうち、あなたが実行可能なコマンドの一覧です。",
-            color=discord.Color.blue()
-        )
-        with open("commands.json", encoding="UTF-8") as f:
-            cmdinfos: dict = json.load(f)
-        i = -1
-        for cmd in cmds:
-            try:
-                if not await cmd.can_run(ctx):
-                    continue
-            except CommandError:
-                continue
-            i += 1
-            if (page - 1) * 5 <= i <= page * 5:
-                embed.add_field(
-                    name=cmd.name,
-                    value=cmdinfos.get(cmd.name, {}).get("brief", "Undefined")
-                )
-        await ctx.send(embed=embed)
-    else:
+async def help(ctx, page=1):
+    if page in bot.all_commands:
         cmds = bot.commands
         command = None
         for cmd in cmds:
             for alias in cmd.aliases:
-                if alias == detailcommand:
+                if alias == page:
                     command = cmd
                     break
-            if cmd.name == detailcommand:
+            if cmd.name == page:
                 command = cmd
                 break
         if command is None:
@@ -161,14 +134,37 @@ async def help(ctx, detailcommand=None):
                 value=", ".join(command.aliases)
             )
         try:
-            avaliable=await command.can_run(ctx)
+            avaliable = await command.can_run(ctx)
         except CommandError:
-            avaliable=False
+            avaliable = False
         embed.add_field(
             name="利用可能かどうか",
             value="利用可能" if avaliable else "利用不可"
         )
         await ctx.message.channel.send(embed=embed)
+    else:
+        cmds = bot.commands
+        embed = discord.Embed(
+            title="Help",
+            description="このBotに登録されているコマンドのうち、あなたが実行可能なコマンドの一覧です。",
+            color=discord.Color.blue()
+        )
+        with open("commands.json", encoding="UTF-8") as f:
+            cmdinfos: dict = json.load(f)
+        i = -1
+        for cmd in cmds:
+            try:
+                if not await cmd.can_run(ctx):
+                    continue
+            except CommandError:
+                continue
+            i += 1
+            if (page - 1) * 5 <= i <= page * 5:
+                embed.add_field(
+                    name=cmd.name,
+                    value=cmdinfos.get(cmd.name, {}).get("brief", "Undefined")
+                )
+        await ctx.send(embed=embed)
 
 
 @bot.command()
