@@ -27,7 +27,7 @@ bot.remove_command("help")
 watchids = []
 ignorelink = []
 reactions = {
-    "🇦": "BAN解除申請",
+    "🇦": "処罰解除申請",
     "🇧": "「IPアドレスがブロックされています」と表示されてログインできない",
     "🇨": "サーバーが起動中のまま/終了中のまま",
     "🇩": "バグ報告",
@@ -179,13 +179,14 @@ async def sendticket(ctx):
         title="Ticketの作成",
         description="要件に該当するリアクションをクリックして、Ticketを作成できます。\n"
                     "Ticketの作成にはMinecraftアカウントとDiscordアカウントを連携している必要があります。\n\n"
-                    ":regional_indicator_a: BAN解除申請\n"
+                    ":regional_indicator_a: 処罰解除申請\n"
                     ":regional_indicator_b: 「IPアドレスがブロックされています」と表示されてログインできない\n"
                     ":regional_indicator_c: サーバーが起動中のまま/終了中のまま\n"
                     ":regional_indicator_d: バグ報告\n"
                     ":regional_indicator_e: ルール違反者報告\n"
                     ":regional_indicator_f: その他(作成されたチャンネルで用件を話してください)\n"
-                    ":regional_indicator_g: Adminのみが閲覧可能なTicketを作成する",
+                    ":regional_indicator_g: Adminのみが閲覧可能なTicketを作成する\n\n"
+                    "Webmoneyでの寄付など、支払いについての問題は:regional_indicator_g:を使用してください。",
         color=discord.Color.blue()
     )
     embed.set_footer(text=f"Ticketパネル作成者: {ctx.message.author} ({ctx.message.author.id})")
