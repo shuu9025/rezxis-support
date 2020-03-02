@@ -22,6 +22,12 @@ def is_ticket():
     return commands.check(predicate)
 
 
+def is_botcmd():
+    async def predicate(ctx):
+        return ctx.message.channel.id == 635419582307368990
+    return commands.check(predicate)
+
+
 bot = commands.Bot(command_prefix='/', owner_id=422081938489344000)
 bot.remove_command("help")
 watchids = []
@@ -386,6 +392,7 @@ async def close_error(ctx, error):
 
 
 @bot.command()
+@is_botcmd()
 async def play(ctx):
     result = json.loads(requests.get(
         "https://api.mcsrvstat.us/2/play.rezxis.net").text)
@@ -400,6 +407,7 @@ async def play(ctx):
 
 
 @bot.command()
+@is_botcmd()
 async def play2(ctx):
     result = json.loads(requests.get(
         "https://api.mcsrvstat.us/2/play2.rezxis.net").text)
@@ -414,6 +422,7 @@ async def play2(ctx):
 
 
 @bot.command()
+@is_botcmd()
 async def mchosting(ctx):
     result = json.loads(requests.get(
         "https://api.mcsrvstat.us/2/mchosting.rezxis.net").text)
@@ -428,6 +437,7 @@ async def mchosting(ctx):
 
 
 @bot.command()
+@is_botcmd()
 async def whoami(ctx):
     try:
         userdata = json.loads(requests.get(
