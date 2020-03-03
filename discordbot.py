@@ -242,10 +242,12 @@ async def on_reaction_add(reaction, user):
                     await asyncio.sleep(5)
                     await message.delete()
                     return
+                uuid = userdata['message']
                 mcid = json.loads(requests.get(
                     f"https://api.mojang.com/user/profiles/{userdata['message'].replace('-', '')}/names").text)[-1]["name"]
             except Exception:
                 mcid = "API Error. Please contact to Administrators."
+                uuid = "Nothing"
         sadmin = discord.utils.get(server.roles, id=573179356273442817)
         admin = discord.utils.get(server.roles, id=517992434366545960)
         staff = discord.utils.get(server.roles, id=517993102867169280)
@@ -303,7 +305,7 @@ async def on_reaction_add(reaction, user):
             "```\n" +
             reactions[reaction.emoji] + "\n" +
             "```\n" +
-            f"リンク済みのMCID: `{mcid}`"
+            f"リンク済みのMCID: `{mcid}` ({uuid})"
         )
 
 
