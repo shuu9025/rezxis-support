@@ -4,6 +4,7 @@ import json
 import os
 
 import discord
+import psutil
 import requests
 from discord.ext import commands
 # ここまでテンプレ ここからいろいろやってく
@@ -309,6 +310,27 @@ async def on_reaction_add(reaction, user):
             f"リンク済みのMCID: `{mcid}` ({uuid})"
         )
 
+
+@commands.is_owner()
+@bot.command(aliases=["about"])
+async def botinfo(ctx):
+    embed = discord.Embed(title="Botの情報",
+                          color=0x9acd32)
+    mem = psutil.virtual_memory()
+    embed.add_field(
+        name="メモリ使用量",
+        value=f"{mem.used}/{mem.total} [{mem.available}]"
+    )
+    embed.add_field(
+        name="CPU使用率",
+        value=str(psutil.cpu_percent(interval=1))
+    )
+    embed.add_field(
+        name="レイテンシ",
+        value=str(bot.latency * 1000) + "ms"
+    )
+    await ctx.message.channel.send(embed=embed)
+    
 
 @bot.command(pass_context=True)
 @commands.is_owner()
