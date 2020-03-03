@@ -227,7 +227,8 @@ async def on_reaction_add(reaction, user):
                 await asyncio.sleep(5)
                 await message.delete()
                 return
-        mcid = "Not Found"
+        mcid = "API Error. Please contact to Administrators."
+        uuid = "Nothing"
         print(user.id)
         print(f"{os.environ['API_URL']}{user.id}")
         if str(user.id) not in ignorelink:
@@ -246,8 +247,7 @@ async def on_reaction_add(reaction, user):
                 mcid = json.loads(requests.get(
                     f"https://api.mojang.com/user/profiles/{userdata['message'].replace('-', '')}/names").text)[-1]["name"]
             except Exception:
-                mcid = "API Error. Please contact to Administrators."
-                uuid = "Nothing"
+                pass
         sadmin = discord.utils.get(server.roles, id=573179356273442817)
         admin = discord.utils.get(server.roles, id=517992434366545960)
         staff = discord.utils.get(server.roles, id=517993102867169280)
@@ -297,6 +297,7 @@ async def on_reaction_add(reaction, user):
         embed.add_field(name="チケット", value=ticket.mention, inline=True)
         embed.add_field(name="要件", value=reactions[reaction.emoji], inline=False)
         embed.add_field(name="MCID", value=mcid, inline=False)
+        embed.add_field(name="UUID", value=uuid, inline=False)
         await notify.send(embed=embed)
         men = await ticket.send(user.mention)
         await men.delete()
