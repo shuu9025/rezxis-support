@@ -40,7 +40,7 @@ reactions = {
     "🇩": "バグ報告",
     "🇪": "ルール違反者報告",
     "🇫": "その他",
-    "🇬": "その他(Adminのみが閲覧可能)"
+    "🇬": "その他(Adminのみが閲覧可能)/支払いについての問題"
 }
 
 
@@ -303,7 +303,7 @@ async def on_reaction_add(reaction, user):
         men = await ticket.send(user.mention)
         await men.delete()
         await ticket.send(
-            "Ticketを作成しました。要件を入力し、運営の対応をお待ちください。\n"
+            "Ticketを作成しました。要件を入力し、運営の対応をお待ちください。Ticketをクローズするには、`/close`と送信してください。\n"
             "```\n" +
             reactions[reaction.emoji] + "\n" +
             "```\n" +
@@ -374,15 +374,16 @@ async def close(ctx):
                 name="実行者", value=ctx.message.author.mention, inline=True)
         with open("ticket-history.txt", mode='rb') as f:
             await notify.send(embed=embed, file=discord.File(f))
+            dm = await openuser.create_dm()
+            try:
+                dmmessage = await dm.send("今回の対応はいかがでしたか？\n"
+                                          "対応にご満足いただけた場合は:+1:を、\n"
+                                          "ご満足いただけなかった場合は:-1:を**60秒以内に**クリックしてください。\n"
+                                          "(どちらをクリックしたかは運営に送信されます。また、回答は必須ではありません。)",
+                                         file=discord.File(f))
+            except CommandInvokeError:
+                return
         os.remove("ticket-history.txt")
-        dm = await openuser.create_dm()
-        try:
-            dmmessage = await dm.send("今回の対応はいかがでしたか？\n"
-                                      "対応にご満足いただけた場合は:+1:を、\n"
-                                      "ご満足いただけなかった場合は:-1:を**60秒以内に**クリックしてください。\n"
-                                      "(どちらをクリックしたかは運営に送信されます。また、回答は必須ではありません。)")
-        except CommandInvokeError:
-            return
         await dmmessage.add_reaction("👍")
         await dmmessage.add_reaction("👎")
         await asyncio.sleep(1)
